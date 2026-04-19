@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Kufi+Arabic:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-ar: 'Noto Kufi Arabic', sans-serif;
+  --font-en: 'IBM Plex Mono', monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --radius: 0.5rem;
+}
+
+@layer base {
+  :root {
+    /* Main Dark Theme (Professional Mode) */
+    --background: hsl(185 25% 7%);
+    --foreground: hsl(180 15% 95%);
+    --card: hsl(185 20% 10%);
+    --card-foreground: hsl(180 15% 95%);
+    --popover: hsl(185 20% 10%);
+    --popover-foreground: hsl(180 15% 95%);
+    --primary: hsl(173 39% 47%);
+    --primary-foreground: hsl(0 0% 100%);
+    --secondary: hsl(185 15% 15%);
+    --secondary-foreground: hsl(180 15% 95%);
+    --muted: hsl(185 15% 15%);
+    --muted-foreground: hsl(180 10% 60%);
+    --accent: hsl(225 72% 74%);
+    --accent-foreground: hsl(0 0% 100%);
+    --destructive: hsl(0 62.8% 30.6%);
+    --destructive-foreground: hsl(0 0% 98%);
+    --border: hsl(185 15% 18%);
+    --input: hsl(185 15% 18%);
+    --ring: hsl(173 39% 55%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-en);
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom styles for professional dashboard-like elements */
+.glass-effect {
+  @apply bg-card/60 backdrop-blur-md border-border/50;
+}
+
+.gradient-heading {
+  @apply bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent;
+}
+
+.sidebar-link-active {
+  @apply bg-primary/10 text-primary font-medium border-r-2 border-primary;
+}
+
+/* ── Print Enhancements ── */
+@media print {
+  @page {
+    margin: 2cm;
+    size: auto;
+  }
+
+  :root {
+    --background: #fff;
+    --foreground: #000;
+    --card: #fff;
+    --card-foreground: #000;
+    --border: #ddd;
+    --muted-foreground: #666;
+    --primary: #000;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-family: serif; /* Classic for print legibility */
+    overflow: visible !important;
+  }
+
+  /* Hide UI elements */
+  aside, 
+  header, 
+  footer,
+  .no-print,
+  button,
+  .mobile-menu-trigger {
+    display: none !important;
+  }
+
+  /* Layout adjustments */
+  #root {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 40px 0 !important;
+    overflow: visible !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .flex-1 {
+    display: block !important;
+  }
+
+  /* Style cards for print */
+  .glass-effect {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: 1px solid #eee !important;
+    box-shadow: none !important;
+    margin-bottom: 20px !important;
+    page-break-inside: avoid;
+  }
+
+  .border-b {
+    border-bottom: 1px solid #eee !important;
+  }
+
+  .bg-muted\/20 {
+    background-color: #f9f9f9 !important;
+  }
+
+  /* Typography */
+  h2 {
+    font-size: 24pt !important;
+    margin-bottom: 12pt !important;
+    color: black !important;
+  }
+
+  h3 {
+    font-size: 16pt !important;
+    color: black !important;
+  }
+
+  p, li {
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    color: #333 !important;
+  }
+
+  section {
+    page-break-after: auto;
+    page-break-inside: avoid;
+    margin-bottom: 40px !important;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 20px;
+  }
+
+  /* Links */
+  a {
+    text-decoration: underline !important;
+    color: black !important;
+  }
+
+  a::after {
+    content: " (" attr(href) ")";
+    font-size: 90%;
+  }
+
+  /* Icons */
+  svg {
+    filter: grayscale(1);
+    opacity: 0.8;
+  }
+
+  /* Forced Page Breaks for important sections if needed */
+  #patient-data {
+    page-break-before: always;
+  }
+}
