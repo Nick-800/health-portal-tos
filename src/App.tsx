@@ -34,7 +34,7 @@ function App() {
   // Sync document direction and language code
   useEffect(() => {
     document.dir = i18n.dir()
-    document.lang = i18n.language
+    document.documentElement.lang = i18n.language
   }, [i18n.language])
 
   useEffect(() => {
