@@ -12,15 +12,34 @@ import {
   Zap, 
   MapPin, 
   Activity,
-  ArrowRight,
   Lock
 } from 'lucide-react'
-import { Button } from '../components/ui'
 
 // Mockup Images
 import HeroImg from '../assets/images/Device.svg'
 import PatientImg from '../assets/images/Device-1.svg'
 import StaffImg from '../assets/images/Device-2.svg'
+
+// Reusable App Store Buttons
+const AppStoreButton = () => (
+  <Link to="/" className="flex items-center justify-center gap-3 bg-black text-white px-5 py-2 rounded-xl hover:scale-105 transition-transform shadow-xl shadow-black/20 w-[180px] h-[52px]">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M15.0063 5.48011C15.8654 4.41721 16.4429 2.94632 16.2863 1.47949C14.9961 1.5332 13.4357 2.36148 12.5404 3.42438C11.7346 4.37039 11.0425 5.86937 11.2307 7.31174C12.6738 7.42337 14.1473 6.54302 15.0063 5.48011ZM16.3653 11.1969C16.3986 8.76104 18.3615 7.61633 18.4552 7.56156C17.3225 5.8647 15.4741 5.61793 14.8696 5.59052C13.3421 5.43387 11.854 6.5168 11.0743 6.5168C10.2946 6.5168 9.07222 5.61399 7.80905 5.6414C6.18579 5.66881 4.67568 6.60875 3.84271 8.08472C2.14668 11.0772 3.4116 15.495 5.06646 17.9309C5.87222 19.1158 6.83447 20.4437 8.08984 20.3889C9.3134 20.3341 9.78262 19.5898 11.2307 19.5898C12.6787 19.5898 13.1165 20.3889 14.3999 20.3615C15.7145 20.3341 16.5433 19.1685 17.3491 17.9857C18.2882 16.587 18.6757 15.2215 18.6917 15.1394C18.6596 15.1118 16.332 14.2076 16.3653 11.1969Z" /></svg>
+    <div className="text-left flex flex-col justify-center">
+      <span className="text-[10px] font-medium leading-[1.1]">Download on the</span>
+      <span className="text-[19px] font-semibold leading-[1.1] tracking-tight mt-[2px]">App Store</span>
+    </div>
+  </Link>
+)
+
+const PlayStoreButton = () => (
+  <Link to="/" className="flex items-center justify-center gap-3 bg-black text-white px-5 py-2 rounded-xl hover:scale-105 transition-transform shadow-xl shadow-black/20 w-[180px] h-[52px]">
+    <svg viewBox="0 0 512 512" width="24" height="24"><path fill="currentColor" d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+    <div className="text-left flex flex-col justify-center">
+      <span className="text-[10px] font-medium leading-[1.1] uppercase tracking-wide">GET IT ON</span>
+      <span className="text-[17px] font-semibold leading-[1.1] tracking-tight mt-[2px]">Google Play</span>
+    </div>
+  </Link>
+)
 
 export default function Landing() {
   const { t } = useTranslation()
@@ -41,10 +60,10 @@ export default function Landing() {
           <a href="#features" className="hover:text-primary transition-colors">{t('landing.featuresTitle')}</a>
           <Link to="/terms-and-services" className="hover:text-primary transition-colors">{t('termsOfService')}</Link>
         </div>
-        <div>
-          <Button variant="default" className="shadow-lg shadow-primary/20">
-            {t('landing.ctaBook')}
-          </Button>
+        <div className="hidden md:block">
+          <Link to="#download" className="text-sm font-semibold hover:text-primary transition-colors">
+            Download App
+          </Link>
         </div>
       </nav>
 
@@ -61,12 +80,8 @@ export default function Landing() {
               {t('landing.heroSubtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button size="lg" className="text-lg px-8 shadow-xl shadow-primary/20 hover:scale-105 transition-transform">
-                {t('landing.ctaBook')} <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 hover:bg-secondary/50 transition-colors">
-                {t('landing.ctaManage')}
-              </Button>
+              <AppStoreButton />
+              <PlayStoreButton />
             </div>
           </div>
           <div className="relative mx-auto lg:mx-0 max-w-md lg:max-w-full animate-float">
@@ -132,9 +147,6 @@ export default function Landing() {
                 </div>
               ))}
             </div>
-            <Button variant="outline" size="lg" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground mt-4">
-              {t('landing.ctaManage')}
-            </Button>
           </div>
           <div className="relative">
             <img src={StaffImg} alt="Staff Dashboard" className="w-full max-w-lg mx-auto drop-shadow-2xl" />
@@ -213,17 +225,14 @@ export default function Landing() {
       </section>
 
       {/* ── CTAs ── */}
-      <section className="py-24 px-6 relative overflow-hidden">
+      <section id="download" className="py-24 px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-primary/5"></div>
         <div className="max-w-3xl mx-auto text-center space-y-8 relative z-10">
           <h2 className="text-4xl lg:text-5xl font-bold">Ready to transform your healthcare experience?</h2>
+          <p className="text-xl text-muted-foreground mb-8">Download the app today and manage your care anywhere, anytime.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-            <Button size="lg" className="text-lg px-8 shadow-xl shadow-primary/20">
-              {t('landing.ctaBook')}
-            </Button>
-            <Button size="lg" variant="secondary" className="text-lg px-8 border border-border/50">
-              {t('landing.ctaManage')}
-            </Button>
+            <AppStoreButton />
+            <PlayStoreButton />
           </div>
         </div>
       </section>
