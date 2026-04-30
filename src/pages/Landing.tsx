@@ -19,6 +19,7 @@ import {
 import HeroImg from '../assets/images/Device.svg'
 import PatientImg from '../assets/images/Device-1.svg'
 import StaffImg from '../assets/images/Device-2.svg'
+import Logo from '../assets/logo.svg'
 
 // Reusable App Store Buttons
 const AppStoreButton = () => (
@@ -50,21 +51,15 @@ export default function Landing() {
       {/* ── Navbar ── */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
-            <Activity className="h-5 w-5 text-primary-foreground" />
-          </div>
-          <span className="text-xl font-bold tracking-tight">Health<span className="text-primary-foreground/40">Portal</span></span>
+          <img src={Logo} alt="HealthPortal Logo" className="h-10 w-auto drop-shadow-md" />
+          <span className="text-2xl font-bold tracking-tight">HealthPortal</span>
         </div>
-        <div className="hidden md:flex gap-6 text-sm font-medium text-muted-foreground">
+        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-6 text-sm font-medium text-muted-foreground">
           <a href="#how-it-works" className="hover:text-primary transition-colors">{t('landing.howItWorks')}</a>
           <a href="#features" className="hover:text-primary transition-colors">{t('landing.featuresTitle')}</a>
           <Link to="/terms-and-services" className="hover:text-primary transition-colors">{t('termsOfService')}</Link>
         </div>
-        <div className="hidden md:block">
-          <Link to="#download" className="text-sm font-semibold hover:text-primary transition-colors">
-            Download App
-          </Link>
-        </div>
+
       </nav>
 
       {/* ── Hero Section ── */}
@@ -72,7 +67,7 @@ export default function Landing() {
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background"></div>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <Badge variant="accent" className="animate-fade-in-up">v1.0.0 Stable Release</Badge>
+
             <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight leading-tight bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent">
               {t('landing.heroTitle')}
             </h1>
@@ -86,7 +81,7 @@ export default function Landing() {
           </div>
           <div className="relative mx-auto lg:mx-0 max-w-md lg:max-w-full animate-float">
             <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full"></div>
-            <img src={HeroImg} alt="Health Portal App" className="relative z-10 w-full drop-shadow-2xl" />
+            <img src={HeroImg} alt="HealthPortal App" className="relative z-10 w-full drop-shadow-2xl" />
           </div>
         </div>
       </section>
@@ -242,8 +237,8 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           <div className="col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <Activity className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold">HealthPortal</span>
+              <img src={Logo} alt="HealthPortal Logo" className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity" />
+              <span className="text-2xl font-bold">HealthPortal</span>
             </div>
             <p className="text-muted-foreground max-w-sm">
               {t('landing.heroSubtitle')}
@@ -265,7 +260,7 @@ export default function Landing() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto pt-8 border-t border-border/50 text-center text-sm text-muted-foreground flex flex-col md:flex-row justify-between items-center gap-4">
-          <p>{t('allRightsReserved')} © 2026 Health Portal Enterprise Solutions.</p>
+          <p>{t('allRightsReserved')} © 2026 HealthPortal Enterprise Solutions.</p>
           <div className="flex items-center gap-4">
              <Globe className="h-4 w-4" />
              <span>{t('landing.multilingual')}</span>

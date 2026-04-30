@@ -14,6 +14,7 @@ import {
   ChevronLeft
 } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent, Badge, Button } from '../components/ui'
+import Logo from '../assets/logo.svg'
 
 export default function TermsOfService() {
   const { t, i18n } = useTranslation()
@@ -38,17 +39,13 @@ export default function TermsOfService() {
     document.documentElement.lang = i18n.language
   }, [i18n.language])
 
-  const toggleLanguage = () => {
-    const nextLng = i18n.language === 'en' ? 'ar' : 'en'
-    i18n.changeLanguage(nextLng)
-  }
-
   const isRtl = i18n.dir() === 'rtl'
 
   return (
-    <div className={`flex h-screen overflow-hidden bg-background text-foreground selection:bg-primary/30 font-en overscroll-none ${isRtl ? 'font-ar' : ''}`}>
+    <div className={`flex h-screen overflow-hidden bg-background text-foreground selection:bg-primary/30 overscroll-none font-sans ${isRtl ? 'font-ar' : ''}`}>
+      <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background"></div>
       {/* ── Main Content Area ── */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden relative z-0">
         {/* Header */}
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/80 px-4 backdrop-blur-md lg:px-8">
           <div className="flex items-center gap-4">
@@ -59,15 +56,7 @@ export default function TermsOfService() {
           </div>
 
           <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="text-primary hover:bg-primary/10 transition-colors"
-              onClick={toggleLanguage}
-              title={i18n.language === 'en' ? 'العربية' : 'English'}
-            >
-              <Languages className="h-5 w-5" />
-            </Button>
+
             <Badge variant="accent" className="hidden sm:flex animate-pulse-slow">{t('version')}</Badge>
             <Button variant="outline" size="sm" className="hidden sm:flex transition-all hover:border-primary/50" onClick={() => window.print()}>
               {t('printDocument')}
@@ -86,8 +75,8 @@ export default function TermsOfService() {
           {/* Print-only professional header */}
           <div className="hidden print:flex items-center justify-between border-b-2 border-black pb-4 mb-8">
             <div className="flex items-center gap-2">
-              <Shield className="h-8 w-8" />
-              <div className="text-xl font-bold tracking-tighter">HealthPortal</div>
+              <img src={Logo} alt="HealthPortal Logo" className="h-10 w-auto grayscale" />
+              <div className="text-2xl font-bold tracking-tighter">HealthPortal</div>
             </div>
             <div className="text-right text-xs uppercase tracking-widest text-gray-500">
               {t('officialDocs')} / {t('termsOfService')}
@@ -97,8 +86,8 @@ export default function TermsOfService() {
           <div className="mx-auto max-w-3xl">
             {/* Header Section */}
             <div className={`mb-16 ${isRtl ? 'text-right' : 'text-left lg:text-left'} text-center lg:text-left`}>
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary mb-8 ring-1 ring-primary/20 animate-in zoom-in duration-700">
-                <Shield className="h-8 w-8" />
+              <div className="inline-flex h-14 w-auto items-center justify-center mb-8 animate-in zoom-in duration-700">
+                <img src={Logo} alt="HealthPortal Logo" className="h-16 w-auto drop-shadow-lg" />
               </div>
               <h2 className={`text-5xl font-bold tracking-tight lg:text-7xl mb-6 bg-gradient-to-br from-foreground to-foreground/50 bg-clip-text text-transparent ${isRtl ? 'lg:text-right' : ''}`}>
                 {t('termsOfService')}
@@ -134,7 +123,7 @@ export default function TermsOfService() {
               })}
 
               <div className="pt-20 text-center text-sm text-muted-foreground border-t border-border/30">
-                {t('allRightsReserved')} © 2026 Health Portal Enterprise Solutions.<br/>
+                {t('allRightsReserved')} © 2026 HealthPortal Enterprise Solutions.<br/>
                 {t('documentId')}: <span className="font-mono opacity-60">HP-LEGAL-2026-002-REV-I18N</span>
               </div>
             </div>
