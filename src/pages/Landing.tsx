@@ -272,10 +272,3 @@ export default function Landing() {
   )
 }
 
-function Badge({ children, variant, className }: { children: React.ReactNode, variant?: string, className?: string }) {
-  return (
-    <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${variant === 'accent' ? 'bg-accent/10 text-accent ring-1 ring-accent/20' : 'bg-primary/10 text-primary ring-1 ring-primary/20'} ${className}`}>
-      {children}
-    </span>
-  )
-}

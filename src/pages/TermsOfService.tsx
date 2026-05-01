@@ -9,8 +9,6 @@ import {
   Lock, 
   Mail,
   Search,
-  ExternalLink,
-  Languages,
   ChevronLeft
 } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent, Badge, Button } from '../components/ui'
