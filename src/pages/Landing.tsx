@@ -248,7 +248,7 @@ export default function Landing() {
             <h4 className="font-bold mb-4 uppercase tracking-wider text-sm opacity-60">Legal</h4>
             <ul className="space-y-2">
               <li><Link to="/terms-and-services" className="text-muted-foreground hover:text-primary transition-colors">{t('landing.footerTerms')}</Link></li>
-              <li><Link to="/terms-and-services#privacy" className="text-muted-foreground hover:text-primary transition-colors">{t('landing.footerPrivacy')}</Link></li>
+              <li><Link to="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors">{t('landing.footerPrivacy')}</Link></li>
             </ul>
           </div>
           <div>
