@@ -57,6 +57,7 @@ export default function Landing() {
         <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-6 text-sm font-medium text-muted-foreground">
           <a href="#how-it-works" className="hover:text-primary transition-colors">{t('landing.howItWorks')}</a>
           <a href="#features" className="hover:text-primary transition-colors">{t('landing.featuresTitle')}</a>
+          <Link to="/privacy-policy" className="hover:text-primary transition-colors">{t('privacyPolicy')}</Link>
           <Link to="/terms-and-services" className="hover:text-primary transition-colors">{t('termsOfService')}</Link>
         </div>
 
