@@ -31,11 +31,12 @@ export default function TermsOfService() {
     { id: 'governingLaw', icon: FileText, color: 'text-accent' },
   ]
 
-  // Sync document direction and language code
+  // Sync document direction, language code, and title
   useEffect(() => {
-    document.dir = i18n.dir()
-    document.documentElement.lang = i18n.language
-  }, [i18n.language])
+     document.dir = i18n.dir()
+     document.documentElement.lang = i18n.language
+     document.title = `${t('termsOfService')} | HealthPortal`
+   }, [i18n, t])
 
   const isRtl = i18n.dir() === 'rtl'
 

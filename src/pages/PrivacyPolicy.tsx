@@ -29,11 +29,12 @@ export default function PrivacyPolicy() {
     { id: 'contact', icon: Mail, color: 'text-primary' },
   ]
 
-  // Sync document direction and language code
+  // Sync document direction, language code, and title
   useEffect(() => {
     document.dir = i18n.dir()
     document.documentElement.lang = i18n.language
-  }, [i18n.language])
+    document.title = `${t('privacyPolicy')} | HealthPortal`
+  }, [i18n, t])
 
   const isRtl = i18n.dir() === 'rtl'
 
@@ -116,6 +117,15 @@ export default function PrivacyPolicy() {
                       <p className="text-base leading-relaxed text-muted-foreground">
                         {t(`privacy.section${index + 1}Content`)}
                       </p>
+                      {section.id === 'dataDeletion' && (
+                        <div className="pt-2">
+                          <Link to="/data-deletion">
+                            <Button variant="destructive" size="sm" className="transition-all hover:bg-destructive/80 font-semibold">
+                              {t('privacy.btnSubmit')} &rarr;
+                            </Button>
+                          </Link>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 )
