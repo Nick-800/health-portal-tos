@@ -30,8 +30,8 @@ jobs:
 
       - name: Smoke test the production build locally
         run: |
-          npx vite preview --port 4173 --strictPort &
-          npx --yes wait-on@8.0.3 --timeout 30000 http-get://127.0.0.1:4173/
+          npx vite preview --host 127.0.0.1 --port 4173 --strictPort &
+          curl -sSf -o /dev/null --retry 15 --retry-delay 1 --retry-connrefused http://127.0.0.1:4173/
           scripts/smoke-test.sh http://127.0.0.1:4173 dist
 
       - uses: actions/upload-artifact@v4
