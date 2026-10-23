@@ -1,0 +1,115 @@
+name: CI/CD
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Lint, build & smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npm run build
+
+      - name: Smoke test the production build locally
+        run: |
+          npx vite preview --port 4173 --strictPort &
+          npx --yes wait-on@8.0.3 --timeout 30000 http-get://127.0.0.1:4173/
+          scripts/smoke-test.sh http://127.0.0.1:4173 dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    name: Deploy (staging → production)
+    needs: verify
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://${{ vars.DEPLOY_DOMAIN }}
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
+    env:
+      DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+      DEPLOY_USER: ${{ vars.DEPLOY_USER }}
+      DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+      DEPLOY_DOMAIN: ${{ vars.DEPLOY_DOMAIN }}
+      STAGING_DOMAIN: ${{ vars.STAGING_DOMAIN }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+
+      - name: Upload release
+        id: release
+        run: |
+          id="$(date -u +%Y%m%d%H%M%S)-${GITHUB_SHA::7}"
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+          echo "previous=$(scripts/deploy.sh release current)" >> "$GITHUB_OUTPUT"
+          scripts/deploy.sh upload dist "$id"
+
+      - name: Activate on staging
+        run: scripts/deploy.sh activate staging "${{ steps.release.outputs.id }}"
+
+      - name: Smoke test staging (origin)
+        env:
+          SMOKE_RESOLVE: ${{ vars.STAGING_DOMAIN }}:443:${{ vars.DEPLOY_HOST }}
+        run: scripts/smoke-test.sh "https://$STAGING_DOMAIN" dist
+
+      - name: Promote to production
+        id: promote
+        run: scripts/deploy.sh activate current "${{ steps.release.outputs.id }}"
+
+      - name: Smoke test production (origin)
+        env:
+          SMOKE_RESOLVE: ${{ vars.DEPLOY_DOMAIN }}:443:${{ vars.DEPLOY_HOST }}
+        run: scripts/smoke-test.sh "https://$DEPLOY_DOMAIN" dist
+
+      - name: Smoke test production (public, through Cloudflare)
+        run: scripts/smoke-test.sh "https://$DEPLOY_DOMAIN"
+
+      - name: Roll back production
+        if: failure() && steps.promote.outcome == 'success'
+        run: |
+          scripts/deploy.sh activate current "${{ steps.release.outputs.previous }}"
+          echo "::error::Deploy failed after promotion; production rolled back to ${{ steps.release.outputs.previous }}"
+
+      - name: Prune old releases
+        if: success()
+        run: scripts/deploy.sh prune 5
